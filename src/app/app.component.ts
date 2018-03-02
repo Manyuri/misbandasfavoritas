@@ -1,25 +1,30 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {Banda} from './banda';
-
-
-const BANDAS:Banda[]=[
-  {id: 11, nombre: 'Morat'},
-  {id: 12, nombre: 'Melendi'},
-  {id: 13, nombre: 'Gilberto Santa Rosa'},
-  {id: 14, nombre: 'Mickey Taveras'},
-  {id: 15, nombre: 'Romeo Santos'}
-];
+import { BandaService } from "./banda.service";
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [BandaService]
 })
-export class AppComponent {
+export class AppComponent  implements OnInit{
+ 
+  
   titulo = 'Mis bandas favoritas';
-  bandas = BANDAS;
 
+  bandas : Banda[];
   banda : Banda;
+  constructor (private bandaService: BandaService){}
+
+  getBandas(): void{
+    this.bandaService.getBandas().then(bandas =>this.bandas = bandas);
+  }
+
+  ngOnInit(): void {
+    this.getBandas();
+  }
+
   Seleccionar(item: Banda): void{
     this.banda = item;
   }
